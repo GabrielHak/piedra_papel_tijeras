@@ -1,0 +1,9 @@
+.contador{
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+}
+
+.contador * {
+    margin: 10px;
+}
