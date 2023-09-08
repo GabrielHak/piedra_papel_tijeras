@@ -1,12 +1,13 @@
-function GetName(props) {
-    function getName() {
-        let name = document.getElementById('nombre').value;
-        props.callBack(name);
-    }
+function GetName(props){
     return (
-        <div className="name">
-            <input type="text" placeholder="Name" id="nombre" />
-            <button onClick={() => getName()}>Enviar</button>
+        <div className="nombre">
+            <input type="text" name="" id="nombre" />
+            <button onClick={
+                () => {
+                    let nombre = document.getElementById('nombre').value;
+                    props.callback(nombre);
+                }
+            }>Enviar</button>
         </div>
     );
 }

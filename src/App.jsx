@@ -7,19 +7,14 @@ import GetName from './Components/GetName';
 function App() {
   let [likes, setLikes] = useState(0);
   
-  let name = "";
-
-  function setName(nombre){
-    name = nombre;
-    console.log(name);
-  }
+  let [nombre, setNombre] = useState("");
 
   return (
     <div className="App">
-      <h1>My name is {name}</h1>
-      <Contador likes={likes}/>
-      <BtnLikes callBack={() => setLikes(++likes)}/>
-      <GetName callBack={(name) => setName(name)}></GetName>
+      <h1>Mi nombre es: {nombre}</h1>
+      <Contador likes={likes}></Contador>
+      <BtnLikes callback={() => setLikes(++likes)}></BtnLikes>
+      <GetName callback={(name) => setNombre(name)}></GetName>
     </div>
   );
 }
