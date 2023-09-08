@@ -1,3 +1,7 @@
+| Disclaimer |
+| --- |
+| Este documento es un resumen de la clase, no es autocontenido para aprender los temas dados. |
+
 # Clase 07/09/23
 
 ## Estado de un componente
@@ -95,7 +99,7 @@ Hecho de esta manera ahora `likes` es el estado del componente y al usar la
 función `setLikes` para modificar ese estado, al hacer `click` en el botón
 tambien se renderiza de nuevo el componente.
 
-### División en mas componentes
+### División en más componentes
 
 Ahora vamos a ver el caso donde el estado esta en el componente `App` y queremos
 mostrar la cantidad de `likes` en un componente y manejar el evento `click` en
@@ -152,3 +156,59 @@ function BtnLikes(props){
 
 export default BtnLikes;
 ```
+
+### Ejercicio extra
+
+En el componente `App` tenemos un `h1` donde queremos imprimir un nombre que
+vamos a obtener de otro componente `GetName` que tendrá un `input` y un `button`
+para enviar la información, primero agregamos un nuevo estado al componente `App`
+y agregamos la etquieta `h1` para mostrar el nombre, y llamamos al nuevo
+componente pasandole la función para modificar el estado:
+
+```js
+import { useState } from 'react';
+import './App.css';
+import Contador from './Components/Contador';
+import BtnLikes from './Components/BtnLikes';
+import GetName from './Components/GetName';
+
+function App() {
+  let [likes, setLikes] = useState(0);
+  let [nombre, setNombre] = useState("");
+  return (
+    <div className="App">
+      <h1>Mi nombre es: {nombre}</h1>
+      <Contador likes={likes}></Contador>
+      <BtnLikes callback={() => setLikes(++likes)}></BtnLikes>
+      <GetName callback={(name) => setNombre(name)}></GetName>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Luego, creamos el componente, con un `input` y un `button`, y a `button`
+le agregamos el atributo `onClick` con la lógica necesaria para obtener
+el dato del `input` y mandarlo por la función que recibimos por `props`:
+
+```js
+function GetName(props){
+    return(
+        <div className="nombre">
+            <input type="text" name="" id="nombre" />
+            <button onClick={
+                () => {
+                    let nombre = document.getElementById('nombre').value;
+                    props.callback(nombre);
+                }
+            }>Enviar</button>
+        </div>
+    );
+}
+
+export default GetName;
+```
+
+De esta forma, obtenemos un dato desde un componente y a través de callbacks
+uso del estado de un componente lo mandamos a otro componente y actualizamos el DOM.
