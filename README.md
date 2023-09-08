@@ -94,3 +94,61 @@ export default Contador;
 Hecho de esta manera ahora `likes` es el estado del componente y al usar la
 función `setLikes` para modificar ese estado, al hacer `click` en el botón
 tambien se renderiza de nuevo el componente.
+
+### División en mas componentes
+
+Ahora vamos a ver el caso donde el estado esta en el componente `App` y queremos
+mostrar la cantidad de `likes` en un componente y manejar el evento `click` en
+otro, para eso modificamos los dos componentes, creando el estado en `App`, pasando
+como `props` la cantidad de `likes` a `Contador`, y pasando por `props` la función
+de modificación de estado al nuevo componente, quedando así:
+
+* App.jsx
+
+```js
+import { useState } from 'react';
+import './App.css';
+import Contador from './Components/Contador';
+import BtnLikes from './Components/BtnLikes';
+
+function App() {
+  let [likes, setLikes] = useState(0);
+  return (
+    <div className="App">
+      <Contador likes={likes}></Contador>
+      <BtnLikes callback={() => setLikes(++likes)}></BtnLikes>
+    </div>
+  );
+}
+
+export default App;
+```
+
+* Contador.jsx
+
+```js
+import '../Styles/Contador.css'
+
+function Contador(props){
+
+    return(
+        <div className="contador">
+            <label htmlFor="">Likes: {props.likes}</label>
+        </div>
+    );
+}
+
+export default Contador;
+```
+
+* BtnLikes.jsx
+
+```js
+function BtnLikes(props){
+    return (
+        <button onClick={() => props.callback()}>+1 Like</button>
+    );
+}
+
+export default BtnLikes;
+```
