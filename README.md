@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# Clase 07/09/23
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Estado de un componente
 
-## Available Scripts
+### Primera vista, modificando una variable local
 
-In the project directory, you can run:
+Para este ejemplo, tendremos el componente principal `App.jsx` de la siguiente
+forma:
 
-### `npm start`
+```js
+import './App.css';
+import Contador from './Components/Contador';
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+function App() {
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  return (
+    <div className="App">
+      <Contador ></Contador>
+    </div>
+  );
+}
 
-### `npm test`
+export default App;
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Y el componente `Contador.jsx` asi:
 
-### `npm run build`
+```js
+function Contador(props){
+    let likes = 0;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    return(
+        <div className="contador">
+            <label htmlFor="">Likes: {likes}</label>
+            <button onClick={
+                () => {
+                    ++likes;
+                    console.log(likes);
+                }
+            }>+1 Like</button>
+        </div>
+    );
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export default Contador;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `npm run eject`
+En este ejemplo, al hacer clik en el boton `+1 Like` no vemos nigún cambio
+visual, pero si vamos a la consola y vemos el resultado podemos notar que la
+variables `likes` si esta cambiando de valor.
+Lo que sucede es que no se actualiza el componente, ya que *React* solo
+actualiza los componentes en los que se haya producido un cambio de **estado**.
+Para lograr esto, y de esta forma obtener cierto dinamismo entre los eventos
+y lo que logramos ver, vamos a hacer uso del `hook` `useState` que nos provee
+*React*.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Usando `useState`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`useState` es una función que devuelve un arreglo con dos elementos, el primero
+es el estado actual de nuestro componente, y el segundo es una función para
+poder modificar ese estado. `useState` toma un parámetro que es el valor incial
+que queremos asignarle a neustro estado, para nuestro ejemplo será `0`.
+Para guardar esos dos elementos en dos variables separadas vamos a hacer uso
+del `deconstruction` que nos provee JS. Vamos a guardar el estado en un variable
+llamada `likes`, la función para modificarla en una variable llamada `setLikes`,
+y vamos a pasar por parámetro el valor `0` para que inicialice `likes`, además
+de importar la correspondiente librería.
+Nos quedaría algo asi: 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```js
+import { useState } from 'react';
+import '../Styles/Contador.css'
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+function Contador(props){
+    let [likes, setLikes] = useState(0);
 
-## Learn More
+    return(
+        <div className="contador">
+            <label htmlFor="">Likes: {likes}</label>
+            <button onClick={
+                () => {
+                    setLikes(++likes);
+                    console.log(likes);
+                }
+            }>+1 Like</button>
+        </div>
+    );
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default Contador;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Hecho de esta manera ahora `likes` es el estado del componente y al usar la
+función `setLikes` para modificar ese estado, al hacer `click` en el botón
+tambien se renderiza de nuevo el componente.
