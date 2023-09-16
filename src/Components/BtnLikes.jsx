@@ -1,6 +1,8 @@
+import StyledButton from "./StyledButton";
+
 function BtnLikes(props){
     return (
-        <button onClick={() => props.callback()}>+1 Like</button>
+        <StyledButton onClick={() => props.callback()} oscuro color="green">+1 Like</StyledButton>
     );
 }
 

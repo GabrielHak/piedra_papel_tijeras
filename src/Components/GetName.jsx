@@ -1,13 +1,15 @@
+import StyledButton from "./StyledButton";
+
 function GetName(props){
     return(
         <div className="nombre">
             <input type="text" name="" id="nombre" />
-            <button onClick={
+            <StyledButton onClick={
                 () => {
                     let nombre = document.getElementById('nombre').value;
                     props.callback(nombre);
                 }
-            }>Enviar</button>
+            } oscuro>Enviar</StyledButton>
         </div>
     );
 }
